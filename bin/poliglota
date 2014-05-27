@@ -29,6 +29,10 @@ program
 if (process.stdin.isTTY) handleTTY();
 else  handlePipe();
 
+/**
+ * 	Control functions
+ */
+
 function handleTTY () {
 	if (!(program.text && program.to)) {
 		program.help();
@@ -42,10 +46,6 @@ function handleTTY () {
 		process.exit(1);
 	});
 }
-
-/**
- * 	Control functions
- */
 
 function handlePipe () {
 	var createChunkHandler = function () {
