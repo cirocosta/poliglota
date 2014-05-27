@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+'use strict';
+
 var poliglota = require('../src/poliglota');
 var program = require('commander');
 var pkg = require('../package.json');
@@ -20,22 +22,64 @@ program
 	  console.log('');
 	}).parse(process.argv);
 
-main();
-
 /**
- * 	Main
+ * Main
  */
 
-function main () {
+if (process.stdin.isTTY) handleTTY();
+else  handlePipe();
+
+function handleTTY () {
 	if (!(program.text && program.to)) {
 		program.help();
 	}
 
 	poliglota.translate(program.text, program.to).then(function (tt) {
-		console.log(tt);
+		process.stdout.write(tt);
 		process.exit(0);
 	}, function (err) {
 		console.log('Error translating.');
 		process.exit(1);
+	});
+}
+
+/**
+ * 	Control functions
+ */
+
+function handlePipe () {
+	var createChunkHandler = function () {
+		var stored = '';
+
+		return function (chunk) {
+			return stored += chunk ? chunk : '';
+		};
+	};
+
+	var chunkHandler = createChunkHandler();
+
+	process.stdin.setEncoding('utf8');
+	process.stdin.on('readable', function () {
+		var chunk = process.stdin.read();
+
+		if (chunk) chunkHandler(chunk);
+	});
+
+	process.stdin.on('end', function () {
+		var data = chunkHandler();
+
+		if (!program.to) {
+			console.log("No 'to lang' specified. Check --help");
+			process.exit(1);
+		}
+
+		poliglota.translate(data, program.to).then(function (tt) {
+			process.stdout.write(tt);
+			process.exit(0);
+		}, function (err) {
+			console.log('Error translating.');
+			process.exit(1);
+		});
+
 	});
 }
