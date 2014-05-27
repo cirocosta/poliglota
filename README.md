@@ -15,7 +15,7 @@ With NodeJS:
 var poliglota = require('poliglota');
 var text = 'The book is on the table';
 
-console.log(poliglota.translate(text));
+console.log(poliglota.translate(text, 'pt'));
 
 // O Livro está sobre a mesa
 ```
