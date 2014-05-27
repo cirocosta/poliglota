@@ -5,7 +5,7 @@
 In your shell:
 
 ```sh
-$ poliglota --to=pt --text="The book is on the table"
+$ poliglota --text="The book is on the table" --to="pt"
 # O livro está sobre a mesa
 ```
 
@@ -25,7 +25,6 @@ In the Browser:
 ```javascript
 //TODO
 ```
-
 
 ## Keycode reference
 

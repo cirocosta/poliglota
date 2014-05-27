@@ -10,18 +10,15 @@ var pkg = require('../package.json');
 
 program
 	.version(pkg.version)
-	.option('-t, --text', 'Text to be translated')
-	.option('-f, --from', 'Language to translate the text from')
-	.option('-l, --lang', 'Language to translate the text to');
-
-program.on('--help', function(){
-  console.log('  Examples:');
-  console.log('');
-  console.log('    $ poliglota --text="O livro está sobre a mesa" --lang en');
-  console.log('');
-});
-
-program.parse(process.argv);
+	.option('-t, --text [text]', 'Text to be translated')
+	.option('-f, --from [lang]', 'Language to translate the text from')
+	.option('-tl, --to [tolang]', 'Language to translate the text to')
+	.on('--help', function(){
+	  console.log('  Examples:');
+	  console.log('');
+	  console.log('    $ poliglota --text="O livro está sobre a mesa" --lang en');
+	  console.log('');
+	}).parse(process.argv);
 
 main();
 
@@ -30,10 +27,15 @@ main();
  */
 
 function main () {
-	if (!(program.text && program.lang)) {
-		program.outputHelp();
-		process.exit(0);
+	if (!(program.text && program.to)) {
+		program.help();
 	}
 
-	console.log(poliglota.translate(program.text, program.lang));
+	poliglota.translate(program.text, program.to).then(function (tt) {
+		console.log(tt);
+		process.exit(0);
+	}, function (err) {
+		console.log('Error translating.');
+		process.exit(1);
+	});
 }
