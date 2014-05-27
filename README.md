@@ -2,14 +2,26 @@
 
 > Translates a given text.
 
-In your shell:
+![build status](https://travis-ci.org/cirocosta/poliglota.svg?branch=master)
+
+## Quickuse
+
+Install it
+```sh
+$ npm install -g poliglota
+```
+
+and use it in your shell:
 
 ```sh
 $ poliglota --text="The book is on the table" --to="pt"
 # O livro está sobre a mesa
+
+$ echo "O livro está sobre a mesa" | ./bin/poliglota --to=en
+# The book is on the table
 ```
 
-With NodeJS:
+with NodeJS:
 
 ```javascript
 var poliglota = require('poliglota');
@@ -20,7 +32,7 @@ console.log(poliglota.translate(text, 'pt'));
 // O Livro está sobre a mesa
 ```
 
-In the Browser:
+or in the Browser:
 
 ```javascript
 //TODO
@@ -94,3 +106,5 @@ In the Browser:
 | Vietnamese          | vi    |
 | Welsh               | cy    |
 | Yiddish             | yi    |
+
+*not all of them verified.*
