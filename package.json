@@ -1,6 +1,6 @@
 {
   "name": "poliglota",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Translates a given text",
   "main": "src/poliglota.js",
   "scripts": {
@@ -9,7 +9,7 @@
   "author": "Ciro S. Costa <ciro9758@gmail.com> (http://www.cirocosta.com.br/)",
   "license": "MIT",
   "bin": {
-    "poliglota": "cli.js"
+    "poliglota": "poliglota"
   },
   "directories": {
     "test": "test"
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/cirocosta/poliglota",
   "dependencies": {
+    "commander": "^2.2.0",
     "q": "^1.0.1",
     "request": "^2.36.0"
   },

@@ -1,0 +1,39 @@
+#!/usr/bin/env node
+
+var poliglota = require('../src/poliglota');
+var program = require('commander');
+var pkg = require('../package.json');
+
+/**
+ * 	CLI
+ */
+
+program
+	.version(pkg.version)
+	.option('-t, --text', 'Text to be translated')
+	.option('-f, --from', 'Language to translate the text from')
+	.option('-l, --lang', 'Language to translate the text to');
+
+program.on('--help', function(){
+  console.log('  Examples:');
+  console.log('');
+  console.log('    $ poliglota --text="O livro está sobre a mesa" --lang en');
+  console.log('');
+});
+
+program.parse(process.argv);
+
+main();
+
+/**
+ * 	Main
+ */
+
+function main () {
+	if (!(program.text && program.lang)) {
+		program.outputHelp();
+		process.exit(0);
+	}
+
+	console.log(poliglota.translate(program.text, program.lang));
+}
