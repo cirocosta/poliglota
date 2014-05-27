@@ -1,15 +1,9 @@
 var assert = require('assert');
-var TranslateApi = require('../src/api.js');
+var poliglota = require('../src/poliglota.js');
 
-describe('TranslateApi,', function () {
+describe('poliglota,', function () {
 	it('should be sane', function () {
-		assert(!!TranslateApi);
-	});
-
-	var api;
-
-	beforeEach(function () {
-		api = new TranslateApi();
+		assert(!!poliglota);
 	});
 
 	describe('regarding the Request made,', function () {
@@ -19,9 +13,8 @@ describe('TranslateApi,', function () {
 			var text = 'O livro está sobre a mesa';
 			var translatedText = 'The book is on the table';
 
-			api.translate(text, 'en').then(function (r,b) {
-				console.log(r.body);
-				assert(true);
+			poliglota.translate(text, 'en').then(function (r) {
+				assert.equal(r, translatedText);
 				done();
 			}, function (err) {
 				assert(false);

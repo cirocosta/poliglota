@@ -19,6 +19,7 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
 	var def = Q.defer();
 	var data;
 	var url;
+	var scope = this;
 
 	if (!(text && toLang))
 		def.reject(new Error('No text and lang passed.'));
@@ -31,9 +32,9 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
 
 	request(this.API_URL + qs.stringify(data), {
 		'User-Agent': 'Mozilla/5.0'
-	}, function (err, resp, body) {
-		if (!err && resp.statusCode === 200) {
-			def.resolve(resp, body)
+	}, function (err, r, body) {
+		if (!err && r.statusCode === 200) {
+			def.resolve(scope._normalizeResult(r.body));
 		} else {
 			def.reject(err);
 		}
@@ -42,4 +43,4 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
 	return def.promise;
 };
 
-module.exports = TranslateApi;
+module.exports = new TranslateApi();

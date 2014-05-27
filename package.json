@@ -1,16 +1,32 @@
 {
-  "name": "google-translate-api-js",
+  "name": "poliglota",
   "version": "0.0.0",
-  "description": "",
-  "main": "api.js",
+  "description": "Translates a given text",
+  "main": "src/poliglota.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha test"
   },
   "author": "Ciro S. Costa <ciro9758@gmail.com> (http://www.cirocosta.com.br/)",
-  "license": "ISC",
+  "license": "MIT",
+  "bin": {
+    "poliglota": "cli.js"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cirocosta/poliglota.git"
+  },
+  "bugs": {
+    "url": "https://github.com/cirocosta/poliglota/issues"
+  },
+  "homepage": "https://github.com/cirocosta/poliglota",
   "dependencies": {
-    "mocha": "^1.19.0",
     "q": "^1.0.1",
     "request": "^2.36.0"
+  },
+  "devDependencies": {
+    "mocha": "^1.19.0"
   }
 }
