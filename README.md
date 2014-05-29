@@ -29,15 +29,12 @@ with NodeJS:
 ```javascript
 var poliglota = require('poliglota');
 var text = 'The book is on the table';
-var translatedText = poliglota.translate(text, 'pt');
 
-console.log(translatedText);
+poliglota.translate(text, 'en').then(function(d) {
+  console.log(d);
+});
 
-// O Livro está sobre a mesa
-
-console.log(poliglota.translate(translatedText, 'en', 'pt');
-
-// The book is on the table
+// O livro está sobre a mesa
 ```
 
 or in the Browser:
