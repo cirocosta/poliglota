@@ -14,8 +14,11 @@ $ npm install -g poliglota
 and use it in your shell:
 
 ```sh
-$ poliglota --text="The book is on the table" --to="pt"
+$ poliglota --text="The book is on the table" --to="pt"   # will use language recognition (auto)
 # O livro está sobre a mesa
+
+$ poliglota --text="O livro está sobre a mesa" --to="en" --from="pt"
+# The book is on the table
 
 $ echo "O livro está sobre a mesa" | ./bin/poliglota --to=en
 # The book is on the table
@@ -26,10 +29,15 @@ with NodeJS:
 ```javascript
 var poliglota = require('poliglota');
 var text = 'The book is on the table';
+var translatedText = poliglota.translate(text, 'pt');
 
-console.log(poliglota.translate(text, 'pt'));
+console.log(translatedText);
 
 // O Livro está sobre a mesa
+
+console.log(poliglota.translate(translatedText, 'en', 'pt');
+
+// The book is on the table
 ```
 
 or in the Browser:
