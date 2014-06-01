@@ -1,11 +1,25 @@
 'use strict';
 
 var assert = require('assert');
+var sinon = require('sinon');
+var http = require('http');
 var poliglota = require('../src/poliglota.js');
 
 describe('poliglota,', function () {
 	it('should be sane', function () {
 		assert(!!poliglota);
+	});
+
+	describe('translate', function () {
+		it('should make the right call', function () {
+			var expectedPath = '/translate_a/t?client=t&hl=en&ie=UTF-8&oe=UTF-8&multires=1&otf=2&ssel=0&tsel=0&sc=1&text=The%20book%20is%20on%20the%20table&tl=en&sl=auto';
+
+			sinon.stub(http, 'get');
+			poliglota.translate('The book is on the table', 'en');
+
+			assert(http.get.calledOnce);
+			assert.equal(http.get.getCall(0).args[0].path, expectedPath);
+		});
 	});
 
 	describe('_normalizeResult,', function () {

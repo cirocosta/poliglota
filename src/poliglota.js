@@ -43,7 +43,7 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
     method: 'GET'
   };
 
-  var req = http.request(reqOptions, function (res) {
+  http.get(reqOptions, function (res) {
     var data = '';
 
     if (res.statusCode !== 200) def.reject();
@@ -61,7 +61,6 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
       def.reject(er);
     });
   });
-  req.end();
 
   return def.promise;
 };
