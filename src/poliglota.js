@@ -40,13 +40,14 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
     headers: {
       'User-Agent': 'Mozilla/5.0'
     },
+    withCredentials: false,
     method: 'GET'
   };
 
   http.get(reqOptions, function (res) {
     var data = '';
 
-    if (res.statusCode !== 200) def.reject();
+    if (res.statusCode !== 200) return def.reject();
 
     res.setEncoding('utf8');
     res.on('data', function (buf) {
@@ -58,7 +59,7 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
     });
 
     res.on('error', function (er) {
-      def.reject(er);
+      def.reject('Error event triggered from http.get.');
     });
   });
 

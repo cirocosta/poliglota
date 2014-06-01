@@ -10,7 +10,7 @@ var rimraf = require('rimraf');
 
 gulp.task('build', function () {
   return gulp.src(['src/poliglota.js'])
-    .pipe(browserify())
+    .pipe(browserify({standalone: 'poliglota'}))
     .pipe(uglify({mangle: true}))
     .pipe(gulp.dest('dist'));
 });

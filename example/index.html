@@ -16,11 +16,17 @@
 
 <script src="../dist/poliglota.js"></script>
 <script type="text/javascript">
-	// NOT WORKING YET
+// suffering from cors problem :(
 
-	console.log(poliglota);
-	document.getElementById('original');
-	document.getElementById('translated');
+	var origElem = document.getElementById('original');
+	var translatedElem = document.getElementById('translated');
+
+	poliglota.translate(origElem.innerHTML, 'pt', 'en').then(function (d) {
+		translatedElem.innerHTML = d;
+	}, function (er) {
+		console.log("oops: ", er);
+	});
+
 </script>
 </body>
 </html>
