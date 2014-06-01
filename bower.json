@@ -1,0 +1,27 @@
+{
+  "name": "poliglota",
+  "main": "dist/poliglota.js",
+  "version": "0.0.1",
+  "homepage": "https://github.com/cirocosta/poliglota",
+  "description": "Translates a given text",
+  "authors": [
+    "Ciro S. Costa <ciro.costa@usp.br>"
+  ],
+  "keywords": [
+    "poliglota",
+    "google",
+    "translate",
+    "translate",
+    "node",
+    "browser",
+    "html5"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
