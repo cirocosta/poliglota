@@ -1,24 +1,26 @@
+'use strict';
+
 var assert = require('assert');
 var poliglota = require('../src/poliglota.js');
 
 describe('poliglota,', function () {
-	it('should be sane', function () {
-		assert(!!poliglota);
-	});
+  it('should be sane', function () {
+    assert(!!poliglota);
+  });
 
-	describe('regarding the Request made,', function () {
-		this.timeout(3000);
+  describe('regarding the Request made,', function () {
+    this.timeout(3000);
 
-		it('should ...', function (done) {
-			var text = 'O livro está sobre a mesa';
-			var translatedText = 'The book is on the table';
+    it('should perform the translation', function (done) {
+      var text = 'O livro está sobre a mesa';
+      var translatedText = 'The book is on the table';
 
-			poliglota.translate(text, 'en').then(function (r) {
-				assert.equal(r, translatedText);
-				done();
-			}, function (err) {
-				assert(false);
-			});
-		});
-	});
+      poliglota.translate(text, 'en').then(function (r) {
+        assert.equal(r, translatedText);
+        done();
+      }, function (err) {
+        assert(false);
+      });
+    });
+  });
 });

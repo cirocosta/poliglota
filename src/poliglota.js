@@ -1,28 +1,31 @@
 #!/usr/bin/env node
 'use strict';
 
-var request = require('request');
+var http = require('http');
 var qs = require('querystring');
 var Q = require('q');
 
 function TranslateApi () {
-  this.API_URL = 'http://translate.google.com.br/translate_a/t?client=t&hl=en&sl=auto&ie=UTF-8&oe=UTF-8&multires=1&otf=2&ssel=0&tsel=0&sc=1&';
+  this.API_SERVER = {
+    host: 'translate.google.com.br',
+    path: '/translate_a/t?client=t&hl=en&ie=UTF-8&oe=UTF-8&multires=1&otf=2&ssel=0&tsel=0&sc=1'
+  };
 }
 
 TranslateApi.prototype._normalizeResult = function(result) {
   return JSON.parse(result.replace(/,{2,}/g,',')
-                            .replace(',]',']')
-                            .replace('[,', '['))[0][0][0];
+                          .replace(',]',']')
+                          .replace('[,', '['))[0][0][0];
 };
 
 TranslateApi.prototype.translate = function (text, toLang, srcLang) {
-  var def = Q.defer();
-  var data;
-  var url;
-  var scope = this;
+  var def = Q.defer(),
+      data,
+      url,
+      scope = this;
 
   if (!(text && toLang))
-    def.reject(new Error('No text and lang passed.'));
+    def.reject(new Error('No text and/or lang passed.'));
 
   data = {
     text: text,
@@ -30,14 +33,34 @@ TranslateApi.prototype.translate = function (text, toLang, srcLang) {
     sl: srcLang || 'auto'
   };
 
-  request(this.API_URL + qs.stringify(data), {
-    'User-Agent': 'Mozilla/5.0'
-  }, function (err, r, body) {
-    if (!err && r.statusCode === 200) {
-      def.resolve(scope._normalizeResult(r.body));
-    } else {
-      def.reject(err);
-    }
+  var reqOptions = {
+    host: scope.API_SERVER.host,
+    path: scope.API_SERVER.path +
+      '&' + qs.stringify(data),
+    headers: {
+      'User-Agent': 'Mozilla/5.0'
+    },
+    withCredentials: false,
+    method: 'GET'
+  };
+
+  http.get(reqOptions, function (res) {
+    var data = '';
+
+    if (res.statusCode !== 200) return def.reject();
+
+    res.setEncoding('utf8');
+    res.on('data', function (buf) {
+      data += buf;
+    });
+
+    res.on('end', function () {
+      def.resolve(scope._normalizeResult(data));
+    });
+
+    res.on('error', function (er) {
+      def.reject('Error event triggered from http.get.');
+    });
   });
 
   return def.promise;
