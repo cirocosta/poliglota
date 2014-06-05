@@ -45,6 +45,8 @@ or in the Browser:
 
 ## Keycode reference
 
+Here is the keycode (to be used when passing to `--to` & `--from` args) mapping table. The same table is also exposed via CLI by doing `$ poliglota -m`.
+
 |         name        |  key  |
 | ------------------- | ----- |
 | Afrikaans           | af    |
