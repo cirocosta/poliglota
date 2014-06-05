@@ -7,20 +7,22 @@ var program = require('commander');
 var pkg = require('../package.json');
 
 /**
- * 	CLI
+ *  CLI
  */
 
 program
-	.version(pkg.version)
-	.option('-t, --text [text]', 'Text to be translated')
-	.option('-f, --from [lang]', 'Language to translate the text from')
-	.option('-tl, --to [tolang]', 'Language to translate the text to')
-	.on('--help', function(){
-	  console.log('  Examples:');
-	  console.log('');
-	  console.log('    $ poliglota --text="O livro está sobre a mesa" --lang en');
-	  console.log('');
-	}).parse(process.argv);
+  .version(pkg.version)
+  .option('-t, --text [text]', 'Text to be translated')
+  .option('-f, --from [lang]', 'Language to translate the text from')
+  .option('-tl, --to [tolang]', 'Language to translate the text to')
+  .option('-m, --mapping', 'Shows the table of languages')
+  .on('--help', function(){
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ poliglota --text="O livro está sobre a mesa" --to en');
+    console.log('');
+  }).parse(process.argv);
+
 
 /**
  * Main
@@ -30,56 +32,63 @@ if (process.stdin.isTTY) handleTTY();
 else  handlePipe();
 
 /**
- * 	Control functions
+ *  Control functions
  */
 
 function handleTTY () {
-	if (!(program.text && program.to)) {
-		program.help();
-	}
+  if (program.mapping || program.m) {
+    var mappingTable = require('./mapping-table');
 
-	poliglota.translate(program.text, program.to).then(function (tt) {
-		process.stdout.write(tt);
-		process.exit(0);
-	}, function (err) {
-		console.log('Error translating.');
-		process.exit(1);
-	});
+    console.log(mappingTable.toString());
+    process.exit(0);
+  }
+
+  if (!(program.text && program.to)) {
+    program.help();
+  }
+
+  poliglota.translate(program.text, program.to).then(function (tt) {
+    process.stdout.write(tt);
+    process.exit(0);
+  }, function (err) {
+    console.error('Error translating.');
+    process.exit(1);
+  });
 }
 
 function handlePipe () {
-	var createChunkHandler = function () {
-		var stored = '';
+  var createChunkHandler = function () {
+    var stored = '';
 
-		return function (chunk) {
-			return stored += chunk ? chunk : '';
-		};
-	};
+    return function (chunk) {
+      return stored += chunk ? chunk : '';
+    };
+  };
 
-	var chunkHandler = createChunkHandler();
+  var chunkHandler = createChunkHandler();
 
-	process.stdin.setEncoding('utf8');
-	process.stdin.on('readable', function () {
-		var chunk = process.stdin.read();
+  process.stdin.setEncoding('utf8');
+  process.stdin.on('readable', function () {
+    var chunk = process.stdin.read();
 
-		if (chunk) chunkHandler(chunk);
-	});
+    if (chunk) chunkHandler(chunk);
+  });
 
-	process.stdin.on('end', function () {
-		var data = chunkHandler();
+  process.stdin.on('end', function () {
+    var data = chunkHandler();
 
-		if (!program.to) {
-			console.log("No 'to lang' specified. Check --help");
-			process.exit(1);
-		}
+    if (!program.to) {
+      console.warn("No 'to lang' specified. Check --help");
+      process.exit(1);
+    }
 
-		poliglota.translate(data, program.to).then(function (tt) {
-			process.stdout.write(tt);
-			process.exit(0);
-		}, function (err) {
-			console.log('Error translating.');
-			process.exit(1);
-		});
+    poliglota.translate(data, program.to).then(function (tt) {
+      process.stdout.write(tt);
+      process.exit(0);
+    }, function (err) {
+      console.error('Error translating.');
+      process.exit(1);
+    });
 
-	});
+  });
 }

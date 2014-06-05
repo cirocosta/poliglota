@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/cirocosta/poliglota",
   "dependencies": {
+    "cli-table": "^0.3.0",
     "commander": "^2.2.0",
     "http-browserify": "^1.3.2",
     "q": "^1.0.1",
