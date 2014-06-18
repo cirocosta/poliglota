@@ -1,8 +1,9 @@
-# poliglota
+# poliglota ![build status](https://travis-ci.org/cirocosta/poliglota.svg?branch=master)
 
 > Translates a given text.
 
-![build status](https://travis-ci.org/cirocosta/poliglota.svg?branch=master)
+
+[![NPM](https://nodei.co/npm/poliglota.png?compact=true)](https://nodei.co/npm/poliglota/)
 
 ## Quickuse
 
